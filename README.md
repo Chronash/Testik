@@ -380,3 +380,44 @@ print("
 Драйверы, связанные с SQL Server:")
 for d in sql_drivers:
     print(" -", d)
+
+
+
+import pyodbc
+
+def get_connection():
+    return pyodbc.connect(
+        "DRIVER={ODBC Driver 17 for SQL Server};"
+        "SERVER=ИМЯ_СЕРВЕРА\\SQLEXPRESS;DATABASE=Exam;Trusted_Connection=yes;"
+    )
+
+# Тест подключения
+try:
+    conn = get_connection()
+    print("✓ Подключение успешно!")
+    
+    # Проверка, что база доступна (даже пустая)
+    cur = conn.cursor()
+    cur.execute("SELECT 1 AS Test")
+    result = cur.fetchone()
+    print(f"✓ Запрос выполнен: {result[0]}")
+    
+    # Показать таблицы в базе (может быть пустой список)
+    cur.execute("""
+        SELECT TABLE_NAME 
+        FROM INFORMATION_SCHEMA.TABLES 
+        WHERE TABLE_TYPE = 'BASE TABLE'
+    """)
+    tables = cur.fetchall()
+    if tables:
+        print(f"✓ Таблиц в базе: {len(tables)}")
+        for t in tables:
+            print(f"  - {t[0]}")
+    else:
+        print("✓ База данных пуста (нет таблиц)")
+    
+    conn.close()
+    print("✓ Подключение закрыто")
+    
+except Exception as e:
+    print(f"✗ Ошибка подключения: {e}")
