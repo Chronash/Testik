@@ -11,8 +11,8 @@ def get_connection():
 
 
 class App(tk.Tk):
-    def init(self):
-        super().init()
+    def __init__(self):
+        super().__init__()
         self.title("Обувной магазин")
 
         try:
@@ -119,7 +119,7 @@ class App(tk.Tk):
         self.products_tree.column("ID", width=70)
         self.products_tree.column("Артикул", width=120)
 
-self.products_tree.tag_configure("discount", background="#2E8B57", foreground="white")
+        self.products_tree.tag_configure("discount", background="#2E8B57", foreground="white")
         self.products_tree.tag_configure("empty", background="lightblue")
         self.products_tree.pack(fill="both", expand=True, padx=5, pady=5)
 
@@ -243,7 +243,7 @@ self.products_tree.tag_configure("discount", background="#2E8B57", foreground="w
         cols = ("ID", "Клиент", "Дата создания", "Дата доставки", "Статус", "Сумма")
         self.orders_tree = ttk.Treeview(win, columns=cols, show="headings")
 
-for c in cols:
+        for c in cols:
             self.orders_tree.heading(c, text=c)
             self.orders_tree.column(c, width=130)
 
@@ -337,5 +337,5 @@ for c in cols:
         tk.Button(win, text="Сохранить", width=20, command=save).pack(pady=15)
 
 
-if name == "main":
+if __name__ == "__main__":
     App().mainloop()
