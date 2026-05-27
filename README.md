@@ -339,3 +339,44 @@ class App(tk.Tk):
 
 if __name__ == "__main__":
     App().mainloop()
+
+
+
+try:
+    conn = pyodbc.connect(
+        "DRIVER={ODBC Driver 17 for SQL Server};"
+        "SERVER=localhost;"
+        "DATABASE=Exam;"
+        "Trusted_Connection=yes;"
+    )
+    cursor = conn.cursor()
+    cursor.execute("SELECT 1")
+    print("Подключение успешно")
+    print(cursor.fetchone())
+    conn.close()
+except Exception as e:
+    print("Ошибка подключения:", e)
+
+
+
+drivers = pyodbc.drivers()
+
+print("Установленные ODBC драйверы:")
+for d in drivers:
+    print(" -", d)
+
+target = "ODBC Driver 17 for SQL Server"
+
+if target in drivers:
+    print(f"
+{target} установлен")
+else:
+    print(f"
+{target} НЕ установлен")
+
+# Покажем подходящие драйверы для SQL Server
+sql_drivers = [d for d in drivers if "SQL Server" in d.lower() or "SQL Server" in d]
+print("
+Драйверы, связанные с SQL Server:")
+for d in sql_drivers:
+    print(" -", d)
